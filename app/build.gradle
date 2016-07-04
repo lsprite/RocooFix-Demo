@@ -1,6 +1,6 @@
 apply plugin: 'com.android.application'
-//apply plugin: 'com.dodola.rocoofix'
-apply plugin: com.dodola.rocoofix.RocooFixPlugin
+apply plugin: 'com.dodola.rocoofix'
+//apply plugin: com.dodola.rocoofix.RocooFixPlugin
 
 repositories {
     maven {
@@ -31,13 +31,13 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
     }
+    useLibrary 'org.apache.http.legacy'
 }
 rocoo_fix {
     excludeClass = ['NuwaUtil.class']//将不需要加到patch里的类写在这里
-    preVersionPath = '1'
-    enable = true
-    scanref = true
-
+    preVersionPath = '1'//根据制定的版本生成补丁
+    enable = true//注意：关掉此项会无法生成Hash.txt文件
+    scanref = true//默认为 false，开启这个选项会将与补丁 class 相引用的 class 都打入包中来解决 ART 虚拟机崩溃问题，功能 Beta 中
 }
 dependencies {
     compile fileTree(dir: 'libs', include: ['*.jar'])

@@ -1,4 +1,4 @@
-package com.dodola.rocoosample;
+package com.dodola.rocoosample.utils;
 
 import android.content.Context;
 import android.content.pm.PackageInfo;
@@ -18,7 +18,6 @@ import java.util.Scanner;
  * Created by Administrator on 2016/7/4.
  */
 public class NuwaUtil {
-    // 启动-模式,首次安装-首次启动、覆盖安装-首次启动、已安装-二次启动
     public enum LMODE {
         LMODE_NEW_INSTALL, LMODE_UPDATE, LMODE_AGAIN
     }
@@ -126,6 +125,9 @@ public class NuwaUtil {
         if (!file.isFile()) {
             return null;
         }
+        if (!file.exists()){
+            return null;
+        }
         MessageDigest digest = null;
         FileInputStream in = null;
         byte buffer[] = new byte[1024];
@@ -182,5 +184,4 @@ public class NuwaUtil {
         }
     }
 
-    //=========================热更新初始化end
 }

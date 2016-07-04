@@ -5,25 +5,26 @@ package com.dodola.rocoosample;
 
 import android.app.Application;
 import android.content.Context;
-import android.content.pm.PackageInfo;
-import android.content.pm.PackageManager;
 import android.os.Environment;
-import android.text.TextUtils;
 
 import com.dodola.rocoofix.RocooFix;
+import com.dodola.rocoosample.utils.NuwaUtil;
 
 import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileOutputStream;
-import java.io.PrintStream;
-import java.math.BigInteger;
-import java.security.MessageDigest;
-import java.util.Scanner;
 
 /**
  * Created by sunpengfei on 16/5/24.
  */
 public class RocooApplication extends Application {
+    private static RocooApplication instance;
+
+    public static RocooApplication getInstance() {
+        if (instance == null) {
+            instance = new RocooApplication();
+        }
+        return instance;
+    }
+
     @Override
     protected void attachBaseContext(Context base) {
         super.attachBaseContext(base);
