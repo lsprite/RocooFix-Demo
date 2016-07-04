@@ -15,8 +15,7 @@ import java.security.MessageDigest;
 import java.util.Scanner;
 
 /**
- * Created by Administrator on 2016/6/30.
- * http://192.168.1.27:8001/yd_xhfk/uploadfiles/patch.jar
+ * Created by Administrator on 2016/7/4.
  */
 public class NuwaUtil {
     // 启动-模式,首次安装-首次启动、覆盖安装-首次启动、已安装-二次启动
@@ -35,6 +34,8 @@ public class NuwaUtil {
         LMODE mode = LMODE.LMODE_NEW_INSTALL;
         String lastVersion = read(filePath);
         String thisVersion = getAppVersion(context);
+        System.out.println("lastVersion:" + lastVersion);
+        System.out.println("thisVersion:" + thisVersion);
         // 首次启动
         if (TextUtils.isEmpty(lastVersion)) {
             System.out.println("首次启动");
@@ -42,7 +43,7 @@ public class NuwaUtil {
         }
         // 更新
         else if (!thisVersion.equals(lastVersion)) {
-            System.out.println("更新");
+            System.out.println("更新(版本不一致)");
             mode = LMODE.LMODE_UPDATE;
         }
         // 二次启动(版本未变)
@@ -50,7 +51,7 @@ public class NuwaUtil {
             System.out.println("二次启动(版本未变)");
             mode = LMODE.LMODE_AGAIN;
         }
-        if (mode == LMODE.LMODE_NEW_INSTALL || mode == LMODE.LMODE_AGAIN) {
+        if (mode == LMODE.LMODE_NEW_INSTALL || mode == LMODE.LMODE_UPDATE) {
             deleteFile(new File(fixFilePath));
         }
         write(context, filePath);
@@ -100,7 +101,7 @@ public class NuwaUtil {
                 while (scan.hasNext()) { // 循环读取
                     sb.append(scan.next() + "\n"); // 设置文本
                 }
-                return sb.toString();
+                return sb.toString().trim();
             } catch (Exception e) {
                 e.printStackTrace();
             } finally {
@@ -152,12 +153,11 @@ public class NuwaUtil {
             PackageManager pkgMng = context.getPackageManager();
             PackageInfo pkgInfo = pkgMng
                     .getPackageInfo(context.getPackageName(), 0);
-            versionName = pkgInfo.versionName;
+            versionName = pkgInfo.versionName.trim();
         } catch (Exception e) {
             // TODO: handle exception
             e.printStackTrace();
         }
-
         return versionName;
     }
 
@@ -181,4 +181,6 @@ public class NuwaUtil {
             e.printStackTrace();
         }
     }
+
+    //=========================热更新初始化end
 }

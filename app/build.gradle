@@ -27,12 +27,13 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
         debug {
-            minifyEnabled false
+            minifyEnabled true
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
     }
 }
 rocoo_fix {
+    excludeClass = ['NuwaUtil.class']//将不需要加到patch里的类写在这里
     preVersionPath = '1'
     enable = true
     scanref = true

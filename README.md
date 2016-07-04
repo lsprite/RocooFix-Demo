@@ -1,3 +1,12 @@
+### 使用小结
+1)配置NuwaUtil类不加到patch里，可以在热补丁初始化之前使用该类
+```gradle
+rocoo_fix {
+    excludeClass = ['NuwaUtil.class']//将不需要加到patch里的类写在这里
+}
+
+```
+
 # RocooFix
 
 Another hotfix framework
