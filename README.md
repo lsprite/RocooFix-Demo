@@ -7,7 +7,7 @@ rocoo_fix {
 
 ```
 
-2)在root的build.gradle更新  classpath 'com.dodola:rocoofix:1.2.1'到最新版本号，对比地址http://dl.bintray.com/dodola/maven/com/dodola/rocoofix/
+2)在root的build.gradle更新  classpath 'com.dodola:rocoofix:xxx'到最新版本号，对比地址http://dl.bintray.com/dodola/maven/com/dodola/rocoofix/(主要看原来项目的版本)
 
 # RocooFix
 

@@ -25,13 +25,6 @@ public class MainActivity extends Activity {
         System.out.println("++++++++" + getCurrentRuntimeValue());
         TextView textView = (TextView) findViewById(R.id.textView);
         textView.setText(new HelloHack().showHello());
-        textView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent intent = new Intent(MainActivity.this, SecondActivity.class);
-                startActivity(intent);
-            }
-        });
         //开启下载补丁服务
         if (false) {
             Intent service = new Intent(this, NuwaDownloadService.class);
