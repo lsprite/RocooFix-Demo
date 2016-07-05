@@ -33,8 +33,6 @@ public class NuwaUtil {
         LMODE mode = LMODE.LMODE_NEW_INSTALL;
         String lastVersion = read(filePath);
         String thisVersion = getAppVersion(context);
-        System.out.println("lastVersion:" + lastVersion);
-        System.out.println("thisVersion:" + thisVersion);
         // 首次启动
         if (TextUtils.isEmpty(lastVersion)) {
             System.out.println("首次启动");
@@ -53,11 +51,11 @@ public class NuwaUtil {
         if (mode == LMODE.LMODE_NEW_INSTALL || mode == LMODE.LMODE_UPDATE) {
             deleteFile(new File(fixFilePath));
         }
-        write(context, filePath);
+        write(context, filePath, thisVersion);
     }
 
     //用到个上下文有关的保存信息的方法会导致加载热补丁的Hack报错，只能使用不用到上下文的文件保存方式
-    private static void write(Context context, String filePath) {
+    private static void write(Context context, String filePath, String str) {
         if (Environment.getExternalStorageState().equals(
                 Environment.MEDIA_MOUNTED)) { // 如果sdcard存在
             File file = new File(filePath); // 定义File类对象
@@ -67,7 +65,7 @@ public class NuwaUtil {
             PrintStream out = null; // 打印流对象用于输出
             try {
                 out = new PrintStream(new FileOutputStream(file, false)); // 替换
-                out.println(getAppVersion(context));
+                out.println(str);
             } catch (Exception e) {
                 e.printStackTrace();
             } finally {
@@ -125,7 +123,7 @@ public class NuwaUtil {
         if (!file.isFile()) {
             return null;
         }
-        if (!file.exists()){
+        if (!file.exists()) {
             return null;
         }
         MessageDigest digest = null;

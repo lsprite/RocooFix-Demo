@@ -1,0 +1,6 @@
+com/dodola/rocoosample/a.class:f84c680d7326b69717ef51dd02dde9a84aca56dc
+com/dodola/rocoosample/MainActivity.class:0f12e956f9da879b12069beb093bb04adaaab4e8
+com/dodola/rocoosample/service/a.class:db6bfca8cd13f7e68480d0a98aab0f9a10304e8f
+com/dodola/rocoosample/service/NuwaDownloadService.class:32cc386f68c9cd5683ae5ab83fe577e1f8feb066
+com/dodola/rocoosample/a/b.class:fdb815de9100f79938f0f3c3b018b09d57561dc7
+com/dodola/rocoosample/a/a.class:ae016662457f90ccdc2afb98f204c00f67298112
