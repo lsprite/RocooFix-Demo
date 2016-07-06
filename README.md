@@ -1,6 +1,6 @@
 ### 使用小结
 1)配置NuwaUtil类不加到patch里，可以在热补丁初始化之前使用该类
-```gradle
+```
 rocoo_fix {
     excludeClass = ['NuwaUtil.class']//将不需要加到patch里的类写在这里
 }
@@ -8,6 +8,15 @@ rocoo_fix {
 ```
 
 2)在root的build.gradle更新  classpath 'com.dodola:rocoofix:xxx'到最新版本号，对比地址http://dl.bintray.com/dodola/maven/com/dodola/rocoofix/(主要看原来项目的版本)
+
+3)动态加载(即使用applyPatchRuntime())时
+```
+    //指定到data/data/应用程序包名/xxx  目录下，防止applyPatchRuntime()方法4.1.2以上报
+    //Caused by: java.lang.IllegalArgumentException: Optimized data directory /storage/emulated/0 is not owned by the current user.
+    //Shared storage cannot protect your application from code injection attacks.
+    //http://vjson.com/wordpress/android防止代码注入攻击.html
+    File file = new File(this.getDir("libs", Context.MODE_PRIVATE) + File.separator + "patch.jar");
+```
 
 # RocooFix
 

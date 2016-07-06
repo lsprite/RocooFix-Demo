@@ -3,6 +3,7 @@
  */
 package com.dodola.rocoosample.runtimefix;
 
+import android.content.Context;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
@@ -10,6 +11,9 @@ import android.widget.Toast;
 
 import com.dodola.rocoofix.RocooFix;
 import com.dodola.rocoosample.HelloHack;
+
+import java.io.File;
+
 
 public class MainActivity extends AppCompatActivity {
 
@@ -29,4 +33,10 @@ public class MainActivity extends AppCompatActivity {
             }
         });
     }
+
+    //指定到data/data/应用程序包名/xxx  目录下，防止applyPatchRuntime()方法4.1.2以上报
+    //Caused by: java.lang.IllegalArgumentException: Optimized data directory /storage/emulated/0 is not owned by the current user.
+    //Shared storage cannot protect your application from code injection attacks.
+    //http://vjson.com/wordpress/android防止代码注入攻击.html
+    File file = new File(this.getDir("libs", Context.MODE_PRIVATE) + File.separator + "patch.jar");
 }
