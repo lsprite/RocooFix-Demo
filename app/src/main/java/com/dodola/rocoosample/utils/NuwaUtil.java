@@ -29,7 +29,7 @@ public class NuwaUtil {
      * @param filePath    版本信息文件路径
      * @param fixFilePath 补丁文件路径
      */
-    public static void check(Context context, String filePath, String fixFilePath) {
+    public static void check(Context context, String filePath, String fixFilePath, String patchErrorPath) {
         LMODE mode = LMODE.LMODE_NEW_INSTALL;
         String lastVersion = read(filePath);
         String thisVersion = getAppVersion(context);
@@ -50,6 +50,7 @@ public class NuwaUtil {
         }
         if (mode == LMODE.LMODE_NEW_INSTALL || mode == LMODE.LMODE_UPDATE) {
             deleteFile(new File(fixFilePath));
+            deleteFile(new File(patchErrorPath));
         }
         write(context, filePath, thisVersion);
     }
@@ -110,6 +111,72 @@ public class NuwaUtil {
         } else {
         }
         return null;
+    }
+
+    //用到个上下文有关的保存信息的方法会导致加载热补丁的Hack报错，只能使用不用到上下文的文件保存方式
+    public static void patchErrorWrite(String filePath, String patchFilePath) {
+        File patchFile = new File(patchFilePath); // 定义File类对象
+        String str = getFileMD5(patchFile);
+        if (TextUtils.isEmpty(str))
+            return;
+        if (Environment.getExternalStorageState().equals(
+                Environment.MEDIA_MOUNTED)) { // 如果sdcard存在
+            File file = new File(filePath); // 定义File类对象
+            System.out.println(file.getAbsolutePath());
+            if (!file.getParentFile().exists()) { // 父文件夹不存在
+                file.getParentFile().mkdirs(); // 创建文件夹
+            }
+            PrintStream out = null; // 打印流对象用于输出
+            try {
+                out = new PrintStream(new FileOutputStream(file, true)); // 替换
+                out.println(str + "\r\n");
+            } catch (Exception e) {
+                e.printStackTrace();
+            } finally {
+                if (out != null) {
+                    out.close(); // 关闭打印流
+                    out = null;
+                }
+            }
+        }
+    }
+
+    // 有问题的补丁的md5码.false不包括，需要下载
+    public static boolean patchErrorRead(String filePath, String md5) {
+        if (Environment.getExternalStorageState().equals(
+                Environment.MEDIA_MOUNTED)) { // 如果sdcard存在
+            File file = new File(filePath); // 定义File类对象
+            try {
+                if (!file.exists()) {
+                    file.getParentFile().mkdirs();
+                    file.createNewFile();
+                }
+            } catch (Exception e) {
+                return false;
+            }
+            Scanner scan = null; // 扫描输入
+//            StringBuilder sb = new StringBuilder();
+            try {
+                scan = new Scanner(new FileInputStream(file)); // 实例化Scanner
+                String tmp = "";
+                while (scan.hasNext()) { // 循环读取
+                    tmp = scan.next();
+//                    sb.append(scan.next() + "\n"); // 设置文本
+                    if (tmp.equals(md5)) {
+                        return true;
+                    }
+                }
+//                return sb.toString().trim();
+            } catch (Exception e) {
+                e.printStackTrace();
+            } finally {
+                if (scan != null) {
+                    scan.close(); // 关闭打印流
+                    scan = null;
+                }
+            }
+        }
+        return false;
     }
 
     /**
